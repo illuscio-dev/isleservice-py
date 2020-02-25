@@ -1,0 +1,172 @@
+components:
+  schemas:
+    null:
+      properties:
+        first:
+          description: Cannot contain spaces.
+          type: string
+        last:
+          description: Cannot Contain spaces.
+          type: string
+      required:
+      - first
+      - last
+      type: object
+    Name:
+      properties:
+        first:
+          description: Cannot contain spaces.
+          type: string
+        last:
+          description: Cannot Contain spaces.
+          type: string
+      required:
+      - first
+      - last
+      type: object
+    EnemyGetReq1:
+      properties:
+        name:
+          allOf:
+          - $ref: '#/components/schemas/Name'
+          description: The Enemy's name.
+        rank:
+          description: Military Rank.
+          type: string
+      required:
+      - name
+      - rank
+      type: object
+    EnemyPostReq1:
+      properties:
+        name:
+          allOf:
+          - $ref: '#/components/schemas/Name'
+          description: The Enemy's name.
+      required:
+      - name
+      type: object
+info:
+  title: isleservice
+  version: 0.2.0
+openapi: 3.0.0
+paths:
+  /greet:
+    get:
+      requestBody:
+        content:
+          application/json:
+            example:
+              name:
+                first: Obi-wan
+                last: Kenobi
+              rank: General
+            schema:
+              $ref: '#/components/schemas/EnemyGetReq1'
+      responses:
+        '200':
+          content:
+            text/plain:
+              example: GENERAL KENOBI!
+              schema:
+                type: string
+          description: Ok.
+        default:
+          description: Error.
+          headers:
+            error-code:
+              description: An API error code that identifies the error-type.
+              required: true
+              schema:
+                default: 1000
+                type: integer
+            error-data:
+              description: 'JSON-serialized data about the error. For instance: request
+                body validation errors will return a dict with details about all offending
+                fields.'
+              required: false
+              schema:
+                format: dict
+                type: string
+            error-id:
+              description: A unique ID with details about this error. Please reference
+                when reporting errors.
+              required: false
+              schema:
+                format: uuid
+                type: string
+            error-message:
+              description: Message containing information about the error.
+              required: true
+              schema:
+                default: An unknown error has occurred.
+                type: string
+            error-name:
+              description: Human-readable error name.
+              required: true
+              schema:
+                default: APIError
+                type: string
+      summary: Get a greeting.
+      tags:
+      - Enemies
+    post:
+      requestBody:
+        content:
+          application/json:
+            example:
+              name:
+                first: Obi-wan
+                last: Kenobi
+            schema:
+              $ref: '#/components/schemas/EnemyPostReq1'
+      responses:
+        '201':
+          content:
+            text/plain:
+              example: GENERAL KENOBI!
+              schema:
+                type: string
+          description: Created.
+        default:
+          description: Error.
+          headers:
+            error-code:
+              description: An API error code that identifies the error-type.
+              required: true
+              schema:
+                default: 1000
+                type: integer
+            error-data:
+              description: 'JSON-serialized data about the error. For instance: request
+                body validation errors will return a dict with details about all offending
+                fields.'
+              required: false
+              schema:
+                format: dict
+                type: string
+            error-id:
+              description: A unique ID with details about this error. Please reference
+                when reporting errors.
+              required: false
+              schema:
+                format: uuid
+                type: string
+            error-message:
+              description: Message containing information about the error.
+              required: true
+              schema:
+                default: An unknown error has occurred.
+                type: string
+            error-name:
+              description: Human-readable error name.
+              required: true
+              schema:
+                default: APIError
+                type: string
+      summary: Send a greeting to an Enemy.
+      tags:
+      - Enemies
+tags:
+- description: Information about an adversary.
+  name: Enemies
